@@ -46,13 +46,13 @@ sub modified_date {
     return unless $file;
 
     my $blog = $_[0]->stash('blog');
-    my @paths = ($file, map File::Spec->catfile($_, $file),
-		 $blog->site_path, $blog->archive_path);
+    my @paths = ($file,
+		 map File::Spec->catfile($_, $file), $blog->site_path, $blog->archive_path);
     my $path;
     for my $p (@paths) {
 	$path = $p, last if -e $p && -r _;
     }
-    return $_[0]->error(MT->translate("Can't find file '[_1]'", $file )) unless $path;
+    return $_[0]->error(MT->translate("Can't find file '[_1]'", $file)) unless $path;
     my ($mtime) = (stat($path))[9];
     $args->{ts} = MT::Util::epoch2ts($blog, $mtime);
     MT::Template::Context::_hdlr_date($ctx, $args);
