@@ -46,8 +46,9 @@ sub modified_date {
     return unless $file;
 
     my $blog = $_[0]->stash('blog');
-    my @paths = ($file,
-		 map File::Spec->catfile($_, $file), $blog->site_path, $blog->archive_path);
+
+    my @paths = map { File::Spec->catfile($_, $file) }
+	($blog->site_path, $blog->archive_path, '');
     my $path;
     for my $p (@paths) {
 	$path = $p, last if -e $p && -r _;
